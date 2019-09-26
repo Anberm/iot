@@ -11,6 +11,9 @@ using Iot.Units;
 
 namespace Iot.Device.Bno055
 {
+    /// <summary>
+    /// BNO055 - inertial measurement unit (IMU)
+    /// </summary>
     public class Bno055Sensor : IDisposable
     {
         /// <summary>
@@ -26,7 +29,7 @@ namespace Iot.Device.Bno055
 
         private const byte DeviceId = 0xA0;
         private readonly bool _autoDispoable;
-        private readonly I2cDevice _i2cDevice;
+        private I2cDevice _i2cDevice;
         private OperationMode _operationMode;
         private Units _units;
 
@@ -466,11 +469,13 @@ namespace Iot.Device.Bno055
             }
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             if (_autoDispoable)
             {
-                _i2cDevice.Dispose();
+                _i2cDevice?.Dispose();
+                _i2cDevice = null;
             }
         }
 
